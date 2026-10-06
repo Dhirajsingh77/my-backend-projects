@@ -253,6 +253,8 @@ const data = fs.readFileSync("file.txt", "utf8");
 
 console.log(data);
 ```
+here if 'utf8' not included then output will be raw buffer data 
+{ <Buffer 4e 6f 64 65 2e 6a 73 20 >}
 
 ---
 
