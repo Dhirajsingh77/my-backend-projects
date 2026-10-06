@@ -282,6 +282,80 @@ fs.unlinkSync("file.txt");
 fs.mkdirSync("folder");
 ```
 
+# Creating Directories — Node.js
+
+## Problem
+
+`fs.mkdir()` throws an error if the directory already exists.
+
+```javascript
+const fs = require("fs");
+
+fs.mkdir("./folder", (err) => {
+    if (err) throw err;
+    console.log("Folder created");
+});
+```
+
+Running this again → **Error: EEXIST** because `folder` already exists.
+
+---
+
+## Solution 1: Handle the Error
+
+```javascript
+fs.mkdir("./folder", (err) => {
+    if (err) {
+        console.log("Folder already exists");
+        return;
+    }
+
+    console.log("Folder created");
+});
+```
+
+---
+
+## Solution 2: Use `recursive: true` ⭐
+
+Recommended when you want the directory to exist whether or not it already exists.
+
+```javascript
+fs.mkdir("./folder", { recursive: true }, (err) => {
+    if (err) throw err;
+
+    console.log("Folder is ready");
+});
+```
+
+### Why `recursive: true`?
+
+- Creates the folder if it doesn't exist.
+- Does **not throw an error** if it already exists.
+- Can also create parent directories if needed.
+
+```javascript
+fs.mkdir("./a/b/c", { recursive: true }, (err) => {
+    if (err) throw err;
+});
+```
+
+### ⭐ Interview Point
+
+```text
+fs.mkdir()
+       ↓
+Directory doesn't exist → creates it
+Directory already exists → EEXIST error
+
+fs.mkdir(path, { recursive: true })
+       ↓
+Directory doesn't exist → creates it
+Directory already exists → no error
+```
+
+
+
 ---
 
 ### Remove Directory
